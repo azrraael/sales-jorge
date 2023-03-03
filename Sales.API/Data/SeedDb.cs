@@ -1,4 +1,5 @@
 ﻿using Sales.Shared.Entities;
+using System.Runtime.InteropServices;
 
 namespace Sales.API.Data
 {
@@ -15,6 +16,7 @@ namespace Sales.API.Data
         {
             await _context.Database.EnsureCreatedAsync();
             await CheckCountriesAsync();
+            await CheckCategoriesAsync();
         }
 
         private async Task CheckCountriesAsync()
@@ -80,6 +82,18 @@ namespace Sales.API.Data
                     }
                 });
 
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        private async Task CheckCategoriesAsync()
+        {
+            if (!_context.Countries.Any())
+            {
+                _context.Categories.Add(new Category { Name = "ropa" });
+                _context.Categories.Add(new Category { Name = "juguetes" });
+                _context.Categories.Add(new Category { Name = "electrodomesticos" });
+                _context.Categories.Add(new Category { Name = "deporte" });
                 await _context.SaveChangesAsync();
             }
         }
